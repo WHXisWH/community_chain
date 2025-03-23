@@ -26,5 +26,38 @@
 </nav>
 
 <style>
-  /* スタイル省略 - 実際の実装ではここに適切なCSSを記述 */
+  .navbar {
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--primary-color);
+  }
 </style>
