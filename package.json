@@ -1,0 +1,35 @@
+{
+  "name": "community_chain",
+  "version": "0.1.0",
+  "description": "コミュニティ活動管理のためのICPアプリケーション",
+  "keywords": [
+    "Internet Computer",
+    "ICP",
+    "Motoko",
+    "JavaScript",
+    "Svelte",
+    "Community"
+  ],
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "dfx start --clean",
+    "deploy:local": "dfx deploy",
+    "deploy:ic": "dfx deploy --network ic",
+    "generate": "dfx generate"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^0.17.0",
+    "@dfinity/auth-client": "^0.17.0",
+    "@dfinity/candid": "^0.17.0",
+    "@dfinity/identity": "^0.17.0",
+    "@dfinity/principal": "^0.17.0",
+    "@sveltejs/adapter-static": "^2.0.2",
+    "@sveltejs/kit": "^1.25.0",
+    "svelte": "^4.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.5",
+    "vite": "^4.4.9"
+  }
+}
