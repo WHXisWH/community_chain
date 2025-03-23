@@ -47,5 +47,75 @@
 </a>
 
 <style>
-  /* スタイル省略 - 実際の実装ではここに適切なCSSを記述 */
+  .activity-card {
+    display: block;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+  }
+
+  .description {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+  }
+
+  .date {
+    color: var(--text-muted);
+  }
+
+  .status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    font-weight: 500;
+    font-size: 0.75rem;
+  }
+
+  .status-open {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+
+  .status-assigned {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .status-completed {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
 </style>
