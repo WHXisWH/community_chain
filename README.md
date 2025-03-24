@@ -3,6 +3,7 @@
 コミュニティチェーンは、Internet Computer Protocol (ICP)を活用した分散型地域活動管理プラットフォームです。地域の貢献活動を簡単に作成・参加・管理でき、貢献者への報酬提供を透明に実現します。
 
 バックエンド：　https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=ficb4-4iaaa-aaaag-at7rq-cai
+
 フロントエンド：　https://f5fqr-5aaaa-aaaag-at7sa-cai.icp0.io/
 
 ## サービスコンセプト
