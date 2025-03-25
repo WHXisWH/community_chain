@@ -14,22 +14,29 @@
   let actionInProgress = false;
   let successMessage = null;
   
-  // 権限チェック
-  $: isCreator = activity && $authStore.principal && 
+  // 権限チェック（より安全な実装）
+  $: isCreator = activity && $authStore.principal && activity.creator && 
                 activity.creator.toString() === $authStore.principal;
   $: isAssignee = activity && activity.assignee && $authStore.principal && 
-                 activity.assignee.toString() === $authStore.principal;
+                activity.assignee.toString() === $authStore.principal;
   $: canApply = $isAuthenticated && activity && activity.status === 'open' && !isCreator;
   $: canComplete = $isAuthenticated && activity && activity.status === 'assigned' && isAssignee;
   
-  // 日付フォーマット関数
+  // 日付フォーマット関数（エラーハンドリング追加）
   const formatDate = (timestamp) => {
-    const date = new Date(Number(timestamp) / 1000000);
-    return date.toLocaleString('ja-JP');
+    try {
+      if (!timestamp) return '日付情報なし';
+      const date = new Date(Number(timestamp) / 1000000);
+      return date.toLocaleString('ja-JP');
+    } catch (err) {
+      console.error('日付変換エラー:', err);
+      return '日付変換エラー';
+    }
   };
   
   // ステータス表示関数
   const getStatusText = (status) => {
+    if (!status) return '不明';
     switch (status) {
       case 'open': return '募集中';
       case 'assigned': return '進行中';
@@ -41,15 +48,20 @@
   // データ読み込み
   onMount(async () => {
     try {
+      console.log(`活動詳細を取得中: ID=${id}`);
       const result = await getActivity(id);
+      console.log('活動データ取得結果:', result);
+      
       if (result) {
-        activity = result;
+        // 配列の場合は最初の要素を取得
+        activity = Array.isArray(result) ? result[0] : result;
+        console.log('活動データをセット:', activity);
       } else {
         error = '指定された活動が見つかりません。';
       }
     } catch (err) {
       error = '活動データの読み込みに失敗しました。';
-      console.error(err);
+      console.error('活動データ取得エラー:', err);
     } finally {
       loading = false;
     }
@@ -67,13 +79,15 @@
       const result = await applyForActivity(id);
       if (result) {
         successMessage = '参加申請が受理されました！';
-        activity = await getActivity(id);
+        const updatedData = await getActivity(id);
+        // 配列の場合は最初の要素を取得
+        activity = Array.isArray(updatedData) ? updatedData[0] : updatedData;
       } else {
         error = '参加申請に失敗しました。';
       }
     } catch (err) {
       error = '参加申請処理中にエラーが発生しました。';
-      console.error(err);
+      console.error('参加申請エラー:', err);
     } finally {
       actionInProgress = false;
     }
@@ -91,13 +105,15 @@
       const result = await completeActivity(id);
       if (result) {
         successMessage = '活動完了の報告が受理されました！';
-        activity = await getActivity(id);
+        const updatedData = await getActivity(id);
+        // 配列の場合は最初の要素を取得
+        activity = Array.isArray(updatedData) ? updatedData[0] : updatedData;
       } else {
         error = '活動完了の報告に失敗しました。';
       }
     } catch (err) {
       error = '活動完了処理中にエラーが発生しました。';
-      console.error(err);
+      console.error('活動完了エラー:', err);
     } finally {
       actionInProgress = false;
     }
@@ -105,7 +121,7 @@
 </script>
 
 <svelte:head>
-  <title>{activity ? `${activity.title} - コミュニティチェーン` : 'コミュニティチェーン'}</title>
+  <title>{activity ? `${activity.title || '無題の活動'} - コミュニティチェーン` : 'コミュニティチェーン'}</title>
 </svelte:head>
 
 <section class="container">
@@ -131,8 +147,8 @@
     <div class="card">
       <div class="card-header">
         <div class="flex-between">
-          <h1 class="activity-title">{activity.title}</h1>
-          <span class={`status status-${activity.status}`}>
+          <h1 class="activity-title">{activity.title || '無題の活動'}</h1>
+          <span class={`status status-${activity.status || 'unknown'}`}>
             {getStatusText(activity.status)}
           </span>
         </div>
@@ -142,12 +158,12 @@
         <div class="meta-info">
           <div class="meta-item">
             <span class="meta-label">場所:</span>
-            <span class="meta-value">{activity.location}</span>
+            <span class="meta-value">{activity.location || '未設定'}</span>
           </div>
           
           <div class="meta-item">
             <span class="meta-label">報酬:</span>
-            <span class="meta-value">{activity.reward} ポイント</span>
+            <span class="meta-value">{activity.reward || 0} ポイント</span>
           </div>
           
           <div class="meta-item">
@@ -158,14 +174,14 @@
         
         <div class="description">
           <h3>活動内容</h3>
-          <p>{activity.description}</p>
+          <p>{activity.description || '説明はありません'}</p>
         </div>
         
         <!-- 参加者情報 (ある場合) -->
         {#if activity.assignee}
           <div class="assignee">
             <h3>参加者</h3>
-            <p class="principal-id">{activity.assignee.toString()}</p>
+            <p class="principal-id">{String(activity.assignee)}</p>
           </div>
         {/if}
       </div>
@@ -299,5 +315,37 @@
   .status-completed {
     background-color: #d1fae5;
     color: #065f46;
+  }
+  
+  .status-unknown {
+    background-color: #e5e7eb;
+    color: #4b5563;
+  }
+  
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    gap: 1rem;
+  }
+  
+  .alert {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .alert-danger {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+  }
+  
+  .alert-success {
+    background-color: #d1fae5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
   }
 </style>

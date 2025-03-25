@@ -70,24 +70,30 @@
     ]
   },
   "src/routes/+layout.css": {
-    "file": "_app/immutable/assets/_layout.fd3872f6.css",
+    "file": "_app/immutable/assets/_layout.a5f2caa6.css",
     "src": "src/routes/+layout.css"
   },
   "src/routes/+layout.svelte": {
     "css": [
-      "_app/immutable/assets/_layout.fd3872f6.css"
+      "_app/immutable/assets/_layout.a5f2caa6.css"
     ],
     "file": "entries/pages/_layout.svelte.js",
     "imports": [
       "_ssr.js",
       "_auth.js",
-      "_stores.js"
+      "_stores.js",
+      "_LoadingSpinner.js"
     ],
     "isEntry": true,
     "src": "src/routes/+layout.svelte"
   },
+  "src/routes/+page.css": {
+    "file": "_app/immutable/assets/_page.fce57730.css",
+    "src": "src/routes/+page.css"
+  },
   "src/routes/+page.svelte": {
     "css": [
+      "_app/immutable/assets/_page.fce57730.css",
       "_app/immutable/assets/ActivityCard.1219333a.css"
     ],
     "file": "entries/pages/_page.svelte.js",
@@ -100,12 +106,12 @@
     "src": "src/routes/+page.svelte"
   },
   "src/routes/activity/[id]/+page.css": {
-    "file": "_app/immutable/assets/_page.4db0454b.css",
+    "file": "_app/immutable/assets/_page.893279c3.css",
     "src": "src/routes/activity/[id]/+page.css"
   },
   "src/routes/activity/[id]/+page.svelte": {
     "css": [
-      "_app/immutable/assets/_page.4db0454b.css"
+      "_app/immutable/assets/_page.893279c3.css"
     ],
     "file": "entries/pages/activity/_id_/_page.svelte.js",
     "imports": [

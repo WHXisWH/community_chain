@@ -1,39 +1,69 @@
 <script>
   import { onMount } from 'svelte';
-  import { initAuth } from '$lib/api/auth';
+  import { initAuth, isInitialized } from '$lib/api/auth';
   import Navbar from '$lib/components/Navbar.svelte';
+  import LoadingSpinner from '$lib/components/LoadingSpinner.svelte';
   import '../app.css';
-  
-  // 認証初期化
+
+  let initializing = true;
+
   onMount(async () => {
-    await initAuth();
+    try {
+      await initAuth();
+    } catch (error) {
+      console.error('Failed to initialize auth:', error);
+    } finally {
+      initializing = false;
+    }
   });
 </script>
 
-<Navbar />
-
-<main>
-  <slot />
-</main>
-
-<footer>
-  <div class="container">
-    <p>© 2025 コミュニティチェーン - ICP Hackathon Wave 4</p>
-  </div>
-</footer>
+<div class="app">
+  <Navbar />
+  
+  <main class="container">
+    {#if initializing && !$isInitialized}
+      <div class="loading-container">
+        <LoadingSpinner size="3rem" />
+        <p>アプリケーションを読み込み中...</p>
+      </div>
+    {:else}
+      <slot />
+    {/if}
+  </main>
+  
+  <footer>
+    <div class="container">
+      <p>© 2025 コミュニティチェーン - Internet Computer Protocol 上に構築</p>
+    </div>
+  </footer>
+</div>
 
 <style>
+  .app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
   main {
-    min-height: calc(100vh - 130px);
+    flex: 1;
     padding: 2rem 0;
   }
 
   footer {
-    text-align: center;
+    background-color: var(--bg-muted);
     padding: 1.5rem 0;
+    text-align: center;
     color: var(--text-muted);
-    font-size: 0.875rem;
-    background-color: white;
-    border-top: 1px solid var(--border-color);
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    gap: 1rem;
   }
 </style>

@@ -37,6 +37,7 @@ declare module '$env/static/private' {
 	export const SHLVL: string;
 	export const npm_config_noproxy: string;
 	export const HOME: string;
+	export const MOTD_SHOWN: string;
 	export const OLDPWD: string;
 	export const npm_package_json: string;
 	export const CANISTER_CANDID_PATH: string;
@@ -125,6 +126,7 @@ declare module '$env/dynamic/private' {
 		SHLVL: string;
 		npm_config_noproxy: string;
 		HOME: string;
+		MOTD_SHOWN: string;
 		OLDPWD: string;
 		npm_package_json: string;
 		CANISTER_CANDID_PATH: string;

@@ -1,7 +1,7 @@
 <script>
-  import { isAuthenticated } from '$lib/api/auth';
-  import { login, logout } from '$lib/api/auth';
+  import { isAuthenticated, isInitialized, login, logout } from '$lib/api/auth';
   import { page } from '$app/stores';
+  import LoadingSpinner from './LoadingSpinner.svelte';
   
   // アクティブページの判定
   $: isActive = (path) => $page.url.pathname === path ? 'active' : '';
@@ -14,7 +14,12 @@
     <div class="nav-links">
       <a href="/" class={isActive('/')}>活動一覧</a>
       
-      {#if $isAuthenticated}
+      {#if !$isInitialized}
+        <!-- 初期化中の表示 -->
+        <div class="loading-container">
+          <LoadingSpinner size="1.5rem" />
+        </div>
+      {:else if $isAuthenticated}
         <a href="/create" class={isActive('/create')}>活動を作成</a>
         <a href="/dashboard" class={isActive('/dashboard')}>マイページ</a>
         <button on:click={logout} class="btn btn-outline">ログアウト</button>
@@ -59,5 +64,12 @@
 
   .nav-links a:hover, .nav-links a.active {
     color: var(--primary-color);
+  }
+
+  .loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
   }
 </style>
