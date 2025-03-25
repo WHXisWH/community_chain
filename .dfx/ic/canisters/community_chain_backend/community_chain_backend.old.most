@@ -1,0 +1,17 @@
+// Version: 1.0.0
+type Activity =
+  {
+    assignee : ?Principal;
+    created_at : Int;
+    creator : Principal;
+    description : Text;
+    id : Text;
+    location : Text;
+    reward : Nat;
+    status : Text;
+    title : Text
+  };
+actor {
+  stable var activitiesEntries : [(Text, Activity)];
+  stable var nextActivityId : Nat
+};

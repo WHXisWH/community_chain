@@ -1,16 +1,16 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'url';
 
 export default defineConfig({
   plugins: [sveltekit()],
   build: {
+    outDir: '../../dist/community_chain_frontend',
     minify: true,
   },
-  define: {
-    // 環境変数
-    'process.env.DFX_NETWORK': JSON.stringify(process.env.DFX_NETWORK || 'local'),
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-    'process.env.COMMUNITY_CHAIN_BACKEND_CANISTER_ID': JSON.stringify(process.env.COMMUNITY_CHAIN_BACKEND_CANISTER_ID || 'community_chain_backend'),
-    'process.env.INTERNET_IDENTITY_CANISTER_ID': JSON.stringify(process.env.INTERNET_IDENTITY_CANISTER_ID || 'internet_identity')
+  resolve: {
+    alias: {
+      $declarations: fileURLToPath(new URL('./declarations', import.meta.url)),
+    },
   }
 });

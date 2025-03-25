@@ -1,0 +1,21 @@
+type Activity = 
+ record {
+   assignee: opt principal;
+   created_at: int;
+   creator: principal;
+   description: text;
+   id: text;
+   location: text;
+   reward: nat;
+   status: text;
+   title: text;
+ };
+service : {
+  applyForActivity: (text) -> (bool);
+  completeActivity: (text) -> (bool);
+  createActivity: (text, text, text, nat) -> (text);
+  getActivity: (text) -> (opt Activity) query;
+  getMyAssignedActivities: () -> (vec Activity) query;
+  getMyCreatedActivities: () -> (vec Activity) query;
+  listActivities: () -> (vec Activity) query;
+}
